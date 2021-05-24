@@ -18,7 +18,7 @@ To install the plugin, all you need to do is place the `VillagerGroupDiscount-X.
 
 **:warning: Important: the plugin keeps track of all the villagers that get cured. Even when the player isn't in a team. Once a player decides to join a team, all his previously cured villagers will also be affected so that the whole group will have the discount.**
 
-**:important: Do note that villagers that were cured before the plugin was installed will not have been registered, and thus will not be offering the discount to the whole group. I am working on a system to manually register cured villagers, but this feature hasn't been added to the plugin yet.**
+**:exclamation: Do note that villagers that were cured before the plugin was installed will not have been registered, and thus will not be offering the discount to the whole group. I am working on a system to manually register cured villagers, but this feature hasn't been added to the plugin yet.**
 
 If a player decides to leave a group, all the villagers that he cured will no longer offer discounts to the whole group.
 
