@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class VGDPlayer {
-    private UUID uuid;
+    private UUID id;
     private VGDGroup vgdGroup;
     private Set<CuredVillager> curedVillagers;
 }

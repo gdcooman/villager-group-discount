@@ -3,7 +3,7 @@ package be.glenndecooman.villagergroupdiscount.model;
 import java.util.UUID;
 
 public class CuredVillager {
-    private UUID uuid;
+    private UUID id;
     private VGDPlayer Curer;
     private VGDGroup CurerGroup;
 }
