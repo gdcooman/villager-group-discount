@@ -22,7 +22,7 @@ To install the plugin, all you need to do is place the `VillagerGroupDiscount-X.
 
 If a player decides to leave a group, all the villagers that he cured will no longer offer discounts to the whole group.
 
-Also, zombie villagers can still be cured multiple times as per the [Minecraft wiki](https://minecraft.fandom.com/wiki/Zombie_Villager#Curing)
+Also, zombie villagers can still be cured multiple times as per the [Minecraft wiki](https://minecraft.fandom.com/wiki/Zombie_Villager#Curing).
 
 ## Issues
 
