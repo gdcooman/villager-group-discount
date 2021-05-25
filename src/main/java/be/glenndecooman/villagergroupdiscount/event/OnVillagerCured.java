@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class OnVillagerCured implements Listener {
-    private final VGDPlayerDAO vgdPlayerDAO;
+    private VGDPlayerDAO vgdPlayerDAO;
 
-    public OnVillagerCured(VGDPlayerDAO vgdPlayerDAO) {
-        this.vgdPlayerDAO = vgdPlayerDAO;
-    }
+//    public OnVillagerCured(VGDPlayerDAO vgdPlayerDAO) {
+//        this.vgdPlayerDAO = vgdPlayerDAO;
+//    }
     @EventHandler
     public void onVillagerCured(EntityTransformEvent event) {
         if (event.getTransformReason() == EntityTransformEvent.TransformReason.CURED) {

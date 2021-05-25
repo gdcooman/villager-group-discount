@@ -8,11 +8,11 @@ import org.bukkit.event.entity.EntityTransformEvent;
 import java.util.UUID;
 
 public class OnVillagerInfected implements Listener {
-    private final CuredVillagerDAO curedVillagerDAO;
+    private CuredVillagerDAO curedVillagerDAO;
 
-    public OnVillagerInfected(CuredVillagerDAO curedVillagerDAO) {
-        this.curedVillagerDAO = curedVillagerDAO;
-    }
+//    public OnVillagerInfected(CuredVillagerDAO curedVillagerDAO) {
+//        this.curedVillagerDAO = curedVillagerDAO;
+//    }
 
     @EventHandler
     public void onVillagerInfected(EntityTransformEvent event) {
