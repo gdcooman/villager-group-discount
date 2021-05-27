@@ -16,7 +16,7 @@ public final class VillagerGroupDiscount extends JavaPlugin {
     @Override
     public void onEnable() {
         connectToDatabase();
-        registerEvents();
+        registerListeners();
         getLogger().info("Loaded successfully");
     }
 
@@ -34,7 +34,7 @@ public final class VillagerGroupDiscount extends JavaPlugin {
         emf = Persistence.createEntityManagerFactory("persistence-unit", properties);
     }
 
-    private void registerEvents() {
+    private void registerListeners() {
         PluginManager pm = getServer().getPluginManager();
 
         pm.registerEvents(new OnPlayerPreLogin(emf.createEntityManager()), this);
