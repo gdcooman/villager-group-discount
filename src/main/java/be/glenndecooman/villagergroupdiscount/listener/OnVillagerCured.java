@@ -22,9 +22,9 @@ public class OnVillagerCured implements Listener {
     private final VGDPlayerDAO vgdPlayerDAO;
     private final CuredVillagerDAOImpl curedVillagerDAO;
 
-    public OnVillagerCured(EntityManager em) {
-        this.vgdPlayerDAO = new VGDPlayerDAOImpl(em);
-        this.curedVillagerDAO = new CuredVillagerDAOImpl(em);
+    public OnVillagerCured(VGDPlayerDAOImpl vgdPlayerDAO, CuredVillagerDAOImpl curedVillagerDAO) {
+        this.vgdPlayerDAO = vgdPlayerDAO;
+        this.curedVillagerDAO = curedVillagerDAO;
     }
 
     @EventHandler

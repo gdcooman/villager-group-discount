@@ -13,8 +13,8 @@ public class VGDPlayerDAOImpl implements VGDPlayerDAO {
     @PersistenceContext
     EntityManager em;
 
-    public VGDPlayerDAOImpl(EntityManager em) {
-        this.em = em;
+    public VGDPlayerDAOImpl() {
+        this.em = JPAUtil.getEntityManager();
     }
 
     @Override

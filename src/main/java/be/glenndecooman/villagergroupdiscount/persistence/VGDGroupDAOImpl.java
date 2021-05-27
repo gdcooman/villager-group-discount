@@ -7,8 +7,8 @@ import javax.persistence.EntityManager;
 public class VGDGroupDAOImpl implements VGDGroupDAO {
     private EntityManager em;
 
-    public VGDGroupDAOImpl(EntityManager em) {
-        this.em = em;
+    public VGDGroupDAOImpl() {
+        this.em = JPAUtil.getEntityManager();
     }
 
     @Override

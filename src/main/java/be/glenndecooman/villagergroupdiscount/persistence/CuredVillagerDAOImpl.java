@@ -9,8 +9,8 @@ import java.util.UUID;
 public class CuredVillagerDAOImpl implements CuredVillagerDAO {
     private EntityManager em;
 
-    public CuredVillagerDAOImpl(EntityManager em) {
-        this.em = em;
+    public CuredVillagerDAOImpl() {
+        this.em = JPAUtil.getEntityManager();
     }
 
     @Override

@@ -12,8 +12,8 @@ import java.util.UUID;
 public class OnVillagerInfected implements Listener {
     private final CuredVillagerDAO curedVillagerDAO;
 
-    public OnVillagerInfected(EntityManager em) {
-        this.curedVillagerDAO = new CuredVillagerDAOImpl(em);
+    public OnVillagerInfected(CuredVillagerDAO curedVillagerDAO) {
+        this.curedVillagerDAO = curedVillagerDAO;
     }
 
     @EventHandler

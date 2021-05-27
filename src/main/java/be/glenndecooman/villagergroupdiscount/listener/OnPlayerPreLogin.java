@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 public class OnPlayerPreLogin implements Listener {
     private final VGDPlayerDAO vgdPlayerDAO;
 
-    public OnPlayerPreLogin(EntityManager em) {
-        this.vgdPlayerDAO = new VGDPlayerDAOImpl(em);
+    public OnPlayerPreLogin(VGDPlayerDAO vgdPlayerDAO) {
+        this.vgdPlayerDAO = vgdPlayerDAO;
     }
 
     @EventHandler
