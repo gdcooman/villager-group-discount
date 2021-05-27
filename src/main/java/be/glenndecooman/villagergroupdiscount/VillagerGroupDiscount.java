@@ -1,8 +1,10 @@
 package be.glenndecooman.villagergroupdiscount;
 
+import be.glenndecooman.villagergroupdiscount.command.CommandManager;
 import be.glenndecooman.villagergroupdiscount.listener.OnPlayerPreLogin;
 import be.glenndecooman.villagergroupdiscount.listener.OnVillagerCured;
 import be.glenndecooman.villagergroupdiscount.listener.OnVillagerInfected;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,6 +19,7 @@ public final class VillagerGroupDiscount extends JavaPlugin {
     public void onEnable() {
         connectToDatabase();
         registerListeners();
+        registerCommands();
         getLogger().info("Loaded successfully");
     }
 
@@ -40,5 +43,12 @@ public final class VillagerGroupDiscount extends JavaPlugin {
         pm.registerEvents(new OnPlayerPreLogin(emf.createEntityManager()), this);
         pm.registerEvents(new OnVillagerCured(emf.createEntityManager()), this);
         pm.registerEvents(new OnVillagerInfected(emf.createEntityManager()), this);
+    }
+
+    private void registerCommands() {
+        PluginCommand vgd = this.getCommand("vgd");
+        if (vgd != null) {
+            vgd.setExecutor(new CommandManager());
+        }
     }
 }

@@ -5,3 +5,7 @@ api-version: 1.16
 prefix: VillageGroupDiscount
 authors: [ gdcooman ]
 description: Makes villager discounts apply to multiple people
+commands:
+  vgd:
+    description: Utilize the plugin
+    usage: /<command> <params>
