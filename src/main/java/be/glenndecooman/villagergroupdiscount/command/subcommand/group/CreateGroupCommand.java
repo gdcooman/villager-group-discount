@@ -26,13 +26,19 @@ public class CreateGroupCommand implements SubCommand {
             this.vgdPlayerDAO = new VGDPlayerDAOImpl(this.em);
 
             String groupName = args[0];
-            VGDPlayer owner = vgdPlayerDAO.findById(sender.getUniqueId());
-            VGDGroup group = new VGDGroup(groupName, owner);
+            if (groupName != null) {
+                if (vgdGroupDAO.groupWithNameExists(groupName) == false) {
+                    VGDPlayer owner = vgdPlayerDAO.findById(sender.getUniqueId());
+                    VGDGroup group = new VGDGroup(groupName, owner);
 
-            this.em.getTransaction().begin();
-            vgdGroupDAO.add(group);
-            group.addMember(owner);
-            this.em.getTransaction().commit();
+                    this.em.getTransaction().begin();
+                    vgdGroupDAO.add(group);
+                    group.addMember(owner);
+                    this.em.getTransaction().commit();
+                } else {
+                    sender.sendMessage("A group with that name already exists!");
+                }
+            }
             this.em.close();
         } else {
             showUsage(sender, "/vgd group create <name>");

@@ -5,6 +5,7 @@ import be.glenndecooman.villagergroupdiscount.model.VGDPlayer;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 public class VGDGroupDAOImpl implements VGDGroupDAO {
     private EntityManager em;
@@ -16,6 +17,13 @@ public class VGDGroupDAOImpl implements VGDGroupDAO {
     @Override
     public VGDGroup findById(Long id) {
         return em.find(VGDGroup.class, id);
+    }
+
+    @Override
+    public boolean groupWithNameExists(String name) {
+        return (Long)em.createQuery(
+                "SELECT COUNT(g) FROM VGDGroup g WHERE g.name = :groupName"
+        ).setParameter("groupName", name).getSingleResult() == 1L;
     }
 
     @Override
