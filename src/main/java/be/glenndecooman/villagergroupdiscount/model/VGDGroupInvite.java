@@ -16,12 +16,15 @@ public class VGDGroupInvite {
     private VGDGroup group;
     private boolean accepted;
     private boolean declined;
+    private boolean active;
     private LocalDateTime expiresAt;
 
     public VGDGroupInvite(VGDPlayer player, VGDGroup group, long minutesTillExpires) {
         this.player = player;
         this.group = group;
         this.accepted = false;
+        this.declined = false;
+        this.active = false;
         this.expiresAt = LocalDateTime.now().plusMinutes(minutesTillExpires);
     }
 
@@ -53,7 +56,7 @@ public class VGDGroupInvite {
     }
 
     public void accept() {
-        if (accepted == false && declined == false) {
+        if (this.isActive()) {
             this.accepted = true;
         }
     }
@@ -63,13 +66,17 @@ public class VGDGroupInvite {
     }
 
     public void decline() {
-        if (accepted == false && declined == false) {
+        if (this.isActive()) {
             this.declined = true;
         }
     }
 
     public boolean isDeclined() {
         return this.declined;
+    }
+
+    public boolean isActive() {
+        return (this.isExpired() == false && (this.accepted == false && this.declined == false));
     }
 
     public boolean isExpired() {
