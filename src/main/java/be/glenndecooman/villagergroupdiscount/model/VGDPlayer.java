@@ -11,7 +11,7 @@ public class VGDPlayer {
     @Id
     private UUID id;
     @ManyToOne
-    @JoinColumn(name = "GroupId")
+    @JoinColumn(name = "groupId")
     private VGDGroup vgdGroup;
     @OneToMany(mappedBy = "curer", cascade = CascadeType.ALL)
     private Set<CuredVillager> curedVillagers;

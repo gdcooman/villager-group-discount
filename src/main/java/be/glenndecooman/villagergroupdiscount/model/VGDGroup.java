@@ -14,7 +14,7 @@ public class VGDGroup {
     @Column
     private String name;
     @OneToOne
-    @JoinColumn(name = "OwnerUUID")
+    @JoinColumn(name = "ownerUUID")
     private VGDPlayer owner;
     @OneToMany(mappedBy = "vgdGroup", cascade = CascadeType.ALL)
     private Set<VGDPlayer> members;

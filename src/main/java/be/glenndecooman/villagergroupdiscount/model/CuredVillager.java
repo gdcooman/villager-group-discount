@@ -11,10 +11,10 @@ public class CuredVillager {
     @Id
     private UUID id;
     @ManyToOne
-    @JoinColumn(name = "PlayerUUID")
+    @JoinColumn(name = "playerUUID")
     private VGDPlayer curer;
     @ManyToOne
-    @JoinColumn(name = "GroupId")
+    @JoinColumn(name = "groupId")
     private VGDGroup curerGroup;
 
     public CuredVillager(UUID id, VGDPlayer curer, VGDGroup curerGroup) {
