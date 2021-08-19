@@ -9,7 +9,7 @@ public class LeaveGroupCommand implements SubCommand {
         if (args.length == 0) {
             sender.sendMessage("Group leave");
         } else {
-            showUsage(sender, "/vgd group group");
+            showUsage(sender, "/vgd group leave");
         }
     }
 }
