@@ -34,6 +34,9 @@ public class CreateGroupCommand implements SubCommand {
                     this.em.getTransaction().begin();
                     vgdGroupDAO.add(group);
                     group.addMember(owner);
+                    owner.getCuredVillagers().forEach((v) -> {
+                        v.setCurerGroup(group);
+                    });
                     this.em.getTransaction().commit();
                 } else {
                     sender.sendMessage("A group with that name already exists!");
