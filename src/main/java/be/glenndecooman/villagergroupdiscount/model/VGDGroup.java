@@ -1,6 +1,7 @@
 package be.glenndecooman.villagergroupdiscount.model;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,8 +28,8 @@ public class VGDGroup {
         this.curedVillagers = curedVillagers;
     }
 
-    public VGDGroup(String name, VGDPlayer owner, Set<VGDPlayer> members) {
-        this(name, owner, members, new HashSet<>());
+    public VGDGroup(String name, VGDPlayer owner) {
+        this(name, owner, new HashSet<>(), new HashSet<>());
     }
 
     // JPA/Hibernate
@@ -64,9 +65,21 @@ public class VGDGroup {
 
     public void addMember(VGDPlayer player) {
         this.members.add(player);
+        player.setGroup(this);
+    }
+
+    public void removeMember(VGDPlayer player) {
+        this.members.remove(player);
+        player.setGroup(null);
     }
 
     public void addCuredVillager(CuredVillager villager) {
         this.curedVillagers.add(villager);
+        villager.setCurerGroup(this);
+    }
+
+    public void removeCuredVillager(CuredVillager villager) {
+        this.curedVillagers.remove(villager);
+        villager.setCurerGroup(null);
     }
 }

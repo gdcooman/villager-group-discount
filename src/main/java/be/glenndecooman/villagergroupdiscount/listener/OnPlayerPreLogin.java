@@ -1,6 +1,7 @@
 package be.glenndecooman.villagergroupdiscount.listener;
 
 import be.glenndecooman.villagergroupdiscount.model.VGDPlayer;
+import be.glenndecooman.villagergroupdiscount.persistence.JPAUtil;
 import be.glenndecooman.villagergroupdiscount.persistence.VGDPlayerDAO;
 import be.glenndecooman.villagergroupdiscount.persistence.VGDPlayerDAOImpl;
 import org.bukkit.Bukkit;
@@ -13,24 +14,23 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 public class OnPlayerPreLogin implements Listener {
-    private final VGDPlayerDAO vgdPlayerDAO;
-
-    public OnPlayerPreLogin(VGDPlayerDAO vgdPlayerDAO) {
-        this.vgdPlayerDAO = vgdPlayerDAO;
-    }
+    private VGDPlayerDAO vgdPlayerDAO;
+    private EntityManager em;
 
     @EventHandler
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+        this.em = JPAUtil.getEntityManager();
+        this.vgdPlayerDAO = new VGDPlayerDAOImpl(this.em);
+
         UUID playerId = event.getUniqueId();
 
         VGDPlayer player = vgdPlayerDAO.findById(playerId);
 
-        Logger logger = Bukkit.getLogger();
         if (player == null) {
+            this.em.getTransaction().begin();
             vgdPlayerDAO.add(new VGDPlayer(playerId));
-            logger.info("in methodeken");
-        } else {
-            logger.info("uit methodeken");
+            this.em.getTransaction().commit();
+            this.em.close();
         }
     }
 }

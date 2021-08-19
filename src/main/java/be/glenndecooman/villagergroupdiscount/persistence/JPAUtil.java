@@ -1,6 +1,5 @@
 package be.glenndecooman.villagergroupdiscount.persistence;
 
-import be.glenndecooman.villagergroupdiscount.VillagerGroupDiscount;
 import org.bukkit.plugin.Plugin;
 
 import javax.persistence.EntityManager;

@@ -1,14 +1,16 @@
 package be.glenndecooman.villagergroupdiscount.persistence;
 
 import be.glenndecooman.villagergroupdiscount.model.VGDGroup;
+import be.glenndecooman.villagergroupdiscount.model.VGDPlayer;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 
 public class VGDGroupDAOImpl implements VGDGroupDAO {
     private EntityManager em;
 
-    public VGDGroupDAOImpl() {
-        this.em = JPAUtil.getEntityManager();
+    public VGDGroupDAOImpl(EntityManager em) {
+        this.em = em;
     }
 
     @Override
@@ -17,17 +19,16 @@ public class VGDGroupDAOImpl implements VGDGroupDAO {
     }
 
     @Override
-    public void add(VGDGroup group) {
-        em.getTransaction().begin();
+    public void add(VGDGroup group) throws EntityExistsException {
         em.persist(group);
-        em.getTransaction().commit();
     }
 
     @Override
     public void delete(Long id) {
-        em.getTransaction().begin();
-        em.remove(em.getReference(VGDGroup.class, id));
-        em.getTransaction().commit();
+        VGDGroup group = findById(id);
+        if (group != null) {
+            em.remove(group);
+        }
     }
 
     @Override

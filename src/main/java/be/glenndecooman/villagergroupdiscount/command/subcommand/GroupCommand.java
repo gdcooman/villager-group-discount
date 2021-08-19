@@ -4,6 +4,7 @@ import be.glenndecooman.villagergroupdiscount.command.SubCommand;
 import be.glenndecooman.villagergroupdiscount.command.subcommand.group.CreateGroupCommand;
 import be.glenndecooman.villagergroupdiscount.command.subcommand.group.DeleteGroupCommand;
 import be.glenndecooman.villagergroupdiscount.command.subcommand.group.InviteGroupCommand;
+import be.glenndecooman.villagergroupdiscount.command.subcommand.group.LeaveGroupCommand;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -17,6 +18,7 @@ public class GroupCommand implements SubCommand {
         subCommands.put("create", new CreateGroupCommand());
         subCommands.put("delete", new DeleteGroupCommand());
         subCommands.put("invite", new InviteGroupCommand());
+        subCommands.put("leave", new LeaveGroupCommand());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package be.glenndecooman.villagergroupdiscount.command;
 
 import be.glenndecooman.villagergroupdiscount.command.subcommand.GroupCommand;
+import be.glenndecooman.villagergroupdiscount.persistence.JPAUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +16,7 @@ public class CommandManager implements CommandExecutor {
     private final Map<String, SubCommand> subCommands = new HashMap<>();
 
     public CommandManager() {
-        subCommands.put("team", new GroupCommand());
+        subCommands.put("group", new GroupCommand());
     }
 
     @Override

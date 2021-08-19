@@ -1,20 +1,18 @@
 package be.glenndecooman.villagergroupdiscount.persistence;
 
-import be.glenndecooman.villagergroupdiscount.model.VGDGroup;
 import be.glenndecooman.villagergroupdiscount.model.VGDPlayer;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.UUID;
 
 public class VGDPlayerDAOImpl implements VGDPlayerDAO {
 
-    @PersistenceContext
     EntityManager em;
 
-    public VGDPlayerDAOImpl() {
-        this.em = JPAUtil.getEntityManager();
+    public VGDPlayerDAOImpl(EntityManager em) {
+        this.em = em;
     }
 
     @Override
@@ -24,16 +22,15 @@ public class VGDPlayerDAOImpl implements VGDPlayerDAO {
 
     @Override
     public void add(VGDPlayer player) {
-        em.getTransaction().begin();
         em.persist(player);
-        em.getTransaction().commit();
     }
 
     @Override
     public void delete(UUID id) {
-        em.getTransaction().begin();
-        em.remove(em.getReference(VGDPlayer.class, id));
-        em.getTransaction().commit();
+        VGDPlayer player = findById(id);
+        if (player != null) {
+            em.remove(player);
+        }
     }
 
     @Override

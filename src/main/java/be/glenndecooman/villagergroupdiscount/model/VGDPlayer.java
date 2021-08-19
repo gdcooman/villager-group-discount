@@ -51,5 +51,11 @@ public class VGDPlayer {
 
     public void addCuredVillager(CuredVillager villager) {
         this.curedVillagers.add(villager);
+        villager.setCurer(this);
+    }
+
+    public void removeCuredVillager(CuredVillager villager) {
+        this.curedVillagers.remove(villager);
+        villager.setCurer(null);
     }
 }

@@ -23,8 +23,8 @@ public class CuredVillager {
         this.curerGroup = curerGroup;
     }
 
-    public CuredVillager(UUID id, VGDPlayer curer) {
-        this(id, curer, null);
+    public CuredVillager(UUID id) {
+        this(id, null, null);
     }
 
     // JPA/Hibernate
