@@ -10,18 +10,14 @@ import org.bukkit.entity.Player;
 import javax.persistence.EntityManager;
 
 public class AcceptInviteCommand implements SubCommand {
-    private VGDPlayerDAO vgdPlayerDAO;
-    private VGDGroupInviteDAO vgdGroupInviteDAO;
-    private EntityManager em;
-
     @Override
     public void execute(Player sender, String[] args) {
         if (args.length == 1) {
             Long inviteId = Long.parseLong(args[0]);
             if (inviteId != null) {
-                em = JPAUtil.getEntityManager();
-                vgdPlayerDAO = new VGDPlayerDAOImpl(em);
-                vgdGroupInviteDAO = new VGDGroupInviteDAOImpl(em);
+                EntityManager em = JPAUtil.getEntityManager();
+                VGDPlayerDAO vgdPlayerDAO = new VGDPlayerDAOImpl(em);
+                VGDGroupInviteDAO vgdGroupInviteDAO = new VGDGroupInviteDAOImpl(em);
 
                 VGDGroupInvite invite = vgdGroupInviteDAO.findById(inviteId);
                 if (invite != null) {

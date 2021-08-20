@@ -14,23 +14,20 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 public class OnPlayerPreLogin implements Listener {
-    private VGDPlayerDAO vgdPlayerDAO;
-    private EntityManager em;
-
     @EventHandler
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
-        this.em = JPAUtil.getEntityManager();
-        this.vgdPlayerDAO = new VGDPlayerDAOImpl(this.em);
+        EntityManager em = JPAUtil.getEntityManager();
+        VGDPlayerDAO vgdPlayerDAO = new VGDPlayerDAOImpl(em);
 
         UUID playerId = event.getUniqueId();
 
         VGDPlayer player = vgdPlayerDAO.findById(playerId);
 
         if (player == null) {
-            this.em.getTransaction().begin();
+            em.getTransaction().begin();
             vgdPlayerDAO.add(new VGDPlayer(playerId));
-            this.em.getTransaction().commit();
-            this.em.close();
+            em.getTransaction().commit();
+            em.close();
         }
     }
 }

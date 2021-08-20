@@ -4,10 +4,7 @@ import be.glenndecooman.villagergroupdiscount.VillagerGroupDiscount;
 import be.glenndecooman.villagergroupdiscount.model.CuredVillager;
 import be.glenndecooman.villagergroupdiscount.model.VGDGroup;
 import be.glenndecooman.villagergroupdiscount.model.VGDPlayer;
-import be.glenndecooman.villagergroupdiscount.persistence.CuredVillagerDAOImpl;
-import be.glenndecooman.villagergroupdiscount.persistence.JPAUtil;
-import be.glenndecooman.villagergroupdiscount.persistence.VGDPlayerDAO;
-import be.glenndecooman.villagergroupdiscount.persistence.VGDPlayerDAOImpl;
+import be.glenndecooman.villagergroupdiscount.persistence.*;
 import be.glenndecooman.villagergroupdiscount.task.AddCuredVillagerTask;
 import com.destroystokyo.paper.entity.villager.Reputation;
 import com.destroystokyo.paper.entity.villager.ReputationType;
@@ -25,9 +22,6 @@ import java.util.UUID;
 
 public class OnVillagerCured implements Listener {
     private final VillagerGroupDiscount plugin;
-    private VGDPlayerDAO vgdPlayerDAO;
-    private CuredVillagerDAOImpl curedVillagerDAO;
-    private EntityManager em;
 
     public OnVillagerCured(VillagerGroupDiscount plugin) {
         this.plugin = plugin;
@@ -40,18 +34,18 @@ public class OnVillagerCured implements Listener {
             ZombieVillager oldE = (ZombieVillager) event.getEntity();
             UUID playerId = oldE.getConversionPlayer() != null ? oldE.getConversionPlayer().getUniqueId() : null;
             if (playerId != null) {
-                this.em = JPAUtil.getEntityManager();
-                this.vgdPlayerDAO = new VGDPlayerDAOImpl(this.em);
-                this.curedVillagerDAO = new CuredVillagerDAOImpl(this.em);
+                EntityManager em = JPAUtil.getEntityManager();
+                VGDPlayerDAO vgdPlayerDAO = new VGDPlayerDAOImpl(em);
+                CuredVillagerDAO curedVillagerDAO = new CuredVillagerDAOImpl(em);
 
                 //get player
                 VGDPlayer player = vgdPlayerDAO.findById(playerId);
                 CuredVillager villager = new CuredVillager(newE.getUniqueId());
 
-                this.em.getTransaction().begin();
+                em.getTransaction().begin();
                 curedVillagerDAO.add(villager);
                 player.addCuredVillager(villager);
-                this.em.getTransaction().commit();
+                em.getTransaction().commit();
 
                 //check if he's in a group
                 VGDGroup curerGroup = player.getGroup();
@@ -59,7 +53,7 @@ public class OnVillagerCured implements Listener {
                     BukkitTask task = new AddCuredVillagerTask(curerGroup.getId(), villager.getId()).runTaskLater(plugin, 5);
                 }
                 //if he's not: don't do anything
-                this.em.close();
+                em.close();
             }
         }
     }

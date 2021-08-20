@@ -12,19 +12,16 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import javax.persistence.EntityManager;
 
 public class OnVillagerDeath implements Listener {
-    private CuredVillagerDAO curedVillagerDAO;
-    private EntityManager em;
-
     @EventHandler
     public void onVillagerDeath(EntityDeathEvent event) {
         if (event.getEntity() instanceof Villager villager) {
-            this.em = JPAUtil.getEntityManager();
-            this.curedVillagerDAO = new CuredVillagerDAOImpl(this.em);
+            EntityManager em = JPAUtil.getEntityManager();
+            CuredVillagerDAO curedVillagerDAO = new CuredVillagerDAOImpl(em);
 
-            this.em.getTransaction().begin();
+            em.getTransaction().begin();
             curedVillagerDAO.delete(villager.getUniqueId());
-            this.em.getTransaction().commit();
-            this.em.close();
+            em.getTransaction().commit();
+            em.close();
         }
     }
 }

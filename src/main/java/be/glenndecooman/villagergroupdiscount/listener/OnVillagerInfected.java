@@ -11,21 +11,18 @@ import javax.persistence.EntityManager;
 import java.util.UUID;
 
 public class OnVillagerInfected implements Listener {
-    private CuredVillagerDAO curedVillagerDAO;
-    private EntityManager em;
-
     @EventHandler
     public void onVillagerInfected(EntityTransformEvent event) {
         if (event.getTransformReason() == EntityTransformEvent.TransformReason.INFECTION) {
             UUID oldVillagerId = event.getEntity().getUniqueId();
 
-            this.em = JPAUtil.getEntityManager();
-            this.curedVillagerDAO = new CuredVillagerDAOImpl(this.em);
+            EntityManager em = JPAUtil.getEntityManager();
+            CuredVillagerDAO curedVillagerDAO = new CuredVillagerDAOImpl(em);
 
-            this.em.getTransaction().begin();
+            em.getTransaction().begin();
             curedVillagerDAO.delete(oldVillagerId);
-            this.em.getTransaction().commit();
-            this.em.close();
+            em.getTransaction().commit();
+            em.close();
         }
     }
 }

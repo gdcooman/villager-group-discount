@@ -15,19 +15,15 @@ import org.bukkit.entity.Player;
 import javax.persistence.EntityManager;
 
 public class InviteGroupCommand implements SubCommand {
-    private VGDPlayerDAO vgdPlayerDAO;
-    private VGDGroupInviteDAO vgdGroupInviteDAO;
-    private EntityManager em;
-
     @Override
     public void execute(Player sender, String[] args) {
         if (args.length == 1) {
             String playerName = args[0];
             Player player = Bukkit.getPlayer(playerName);
             if (player != null) {
-                em = JPAUtil.getEntityManager();
-                vgdPlayerDAO = new VGDPlayerDAOImpl(em);
-                vgdGroupInviteDAO = new VGDGroupInviteDAOImpl(em);
+                EntityManager em = JPAUtil.getEntityManager();
+                VGDPlayerDAO vgdPlayerDAO = new VGDPlayerDAOImpl(em);
+                VGDGroupInviteDAO vgdGroupInviteDAO = new VGDGroupInviteDAOImpl(em);
 
                 VGDPlayer inviter = vgdPlayerDAO.findById(sender.getUniqueId());
                 VGDPlayer invitee = vgdPlayerDAO.findById(player.getUniqueId());

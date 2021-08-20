@@ -14,16 +14,12 @@ import javax.persistence.EntityManager;
 import java.util.logging.Logger;
 
 public class CreateGroupCommand implements SubCommand {
-    private VGDGroupDAO vgdGroupDAO;
-    private VGDPlayerDAO vgdPlayerDAO;
-    private EntityManager em;
-
     @Override
     public void execute(Player sender, String[] args) {
         if (args.length == 1) {
-            this.em = JPAUtil.getEntityManager();
-            this.vgdGroupDAO = new VGDGroupDAOImpl(this.em);
-            this.vgdPlayerDAO = new VGDPlayerDAOImpl(this.em);
+            EntityManager em = JPAUtil.getEntityManager();
+            VGDGroupDAO vgdGroupDAO = new VGDGroupDAOImpl(em);
+            VGDPlayerDAO vgdPlayerDAO = new VGDPlayerDAOImpl(em);
 
             String groupName = args[0];
             if (groupName != null) {
@@ -31,15 +27,15 @@ public class CreateGroupCommand implements SubCommand {
                     VGDPlayer owner = vgdPlayerDAO.findById(sender.getUniqueId());
                     VGDGroup group = new VGDGroup(groupName, owner);
 
-                    this.em.getTransaction().begin();
+                    em.getTransaction().begin();
                     vgdGroupDAO.add(group);
                     group.addMember(owner);
-                    this.em.getTransaction().commit();
+                    em.getTransaction().commit();
                 } else {
                     sender.sendMessage("A group with that name already exists!");
                 }
             }
-            this.em.close();
+            em.close();
         } else {
             showUsage(sender, "/vgd group create <name>");
         }
