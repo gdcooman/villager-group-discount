@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 public class VGDGroupDAOImpl implements VGDGroupDAO {
-    private EntityManager em;
+    private final EntityManager em;
 
     public VGDGroupDAOImpl(EntityManager em) {
         this.em = em;
@@ -21,7 +21,7 @@ public class VGDGroupDAOImpl implements VGDGroupDAO {
 
     @Override
     public boolean groupWithNameExists(String name) {
-        return (Long)em.createQuery(
+        return (Long) em.createQuery(
                 "SELECT COUNT(g) FROM VGDGroup g WHERE g.name = :groupName"
         ).setParameter("groupName", name).getSingleResult() == 1L;
     }

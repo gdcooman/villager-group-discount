@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import java.util.UUID;
 
 public class CuredVillagerDAOImpl implements CuredVillagerDAO {
-    private EntityManager em;
+    private final EntityManager em;
 
     public CuredVillagerDAOImpl(EntityManager em) {
         this.em = em;

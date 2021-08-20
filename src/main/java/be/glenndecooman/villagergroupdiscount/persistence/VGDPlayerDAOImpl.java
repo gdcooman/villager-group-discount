@@ -8,8 +8,7 @@ import javax.persistence.PersistenceContext;
 import java.util.UUID;
 
 public class VGDPlayerDAOImpl implements VGDPlayerDAO {
-
-    EntityManager em;
+    private final EntityManager em;
 
     public VGDPlayerDAOImpl(EntityManager em) {
         this.em = em;

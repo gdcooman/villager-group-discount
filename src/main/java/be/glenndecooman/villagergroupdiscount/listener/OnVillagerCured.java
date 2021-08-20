@@ -1,5 +1,6 @@
 package be.glenndecooman.villagergroupdiscount.listener;
 
+import be.glenndecooman.villagergroupdiscount.VillagerGroupDiscount;
 import be.glenndecooman.villagergroupdiscount.model.CuredVillager;
 import be.glenndecooman.villagergroupdiscount.model.VGDGroup;
 import be.glenndecooman.villagergroupdiscount.model.VGDPlayer;
@@ -7,12 +8,15 @@ import be.glenndecooman.villagergroupdiscount.persistence.CuredVillagerDAOImpl;
 import be.glenndecooman.villagergroupdiscount.persistence.JPAUtil;
 import be.glenndecooman.villagergroupdiscount.persistence.VGDPlayerDAO;
 import be.glenndecooman.villagergroupdiscount.persistence.VGDPlayerDAOImpl;
+import be.glenndecooman.villagergroupdiscount.task.AddCuredVillagerTask;
 import com.destroystokyo.paper.entity.villager.Reputation;
+import com.destroystokyo.paper.entity.villager.ReputationType;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.ZombieVillager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTransformEvent;
+import org.bukkit.scheduler.BukkitTask;
 
 import javax.persistence.EntityManager;
 import java.util.HashMap;
@@ -20,9 +24,14 @@ import java.util.Map;
 import java.util.UUID;
 
 public class OnVillagerCured implements Listener {
+    private final VillagerGroupDiscount plugin;
     private VGDPlayerDAO vgdPlayerDAO;
     private CuredVillagerDAOImpl curedVillagerDAO;
     private EntityManager em;
+
+    public OnVillagerCured(VillagerGroupDiscount plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onVillagerCured(EntityTransformEvent event) {
@@ -38,23 +47,17 @@ public class OnVillagerCured implements Listener {
                 //get player
                 VGDPlayer player = vgdPlayerDAO.findById(playerId);
                 CuredVillager villager = new CuredVillager(newE.getUniqueId());
+
                 this.em.getTransaction().begin();
                 curedVillagerDAO.add(villager);
                 player.addCuredVillager(villager);
+                this.em.getTransaction().commit();
+
                 //check if he's in a group
                 VGDGroup curerGroup = player.getGroup();
                 if (curerGroup != null) {
-                    //if he is in a group: get all the players from that team and set their reputation on the villager
-                    curerGroup.addCuredVillager(villager);
-                    Reputation rep = newE.getReputation(playerId);
-                    Map<UUID, Reputation> newReputations = new HashMap<>();
-                    for (VGDPlayer member : curerGroup.getMembers()) {
-                        newReputations.put(member.getId(), rep);
-                    }
-
-                    newE.setReputations(newReputations);
+                    BukkitTask task = new AddCuredVillagerTask(curerGroup.getId(), villager.getId()).runTaskLater(plugin, 5);
                 }
-                this.em.getTransaction().commit();
                 //if he's not: don't do anything
                 this.em.close();
             }

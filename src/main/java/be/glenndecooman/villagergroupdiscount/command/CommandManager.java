@@ -1,6 +1,7 @@
 package be.glenndecooman.villagergroupdiscount.command;
 
 import be.glenndecooman.villagergroupdiscount.command.subcommand.GroupCommand;
+import be.glenndecooman.villagergroupdiscount.command.subcommand.InviteCommand;
 import be.glenndecooman.villagergroupdiscount.persistence.JPAUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,6 +18,7 @@ public class CommandManager implements CommandExecutor {
 
     public CommandManager() {
         subCommands.put("group", new GroupCommand());
+        subCommands.put("invite", new InviteCommand());
     }
 
     @Override

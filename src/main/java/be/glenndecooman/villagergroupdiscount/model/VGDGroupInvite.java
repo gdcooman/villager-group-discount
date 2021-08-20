@@ -1,35 +1,41 @@
 package be.glenndecooman.villagergroupdiscount.model;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "VGDGroupInvite")
 public class VGDGroupInvite {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "playerId")
-    private VGDPlayer player;
+    @JoinColumn(name = "inviterId")
+    private VGDPlayer inviter;
+    @ManyToOne
+    @JoinColumn(name = "inviteeId")
+    private VGDPlayer invitee;
     @ManyToOne
     @JoinColumn(name = "groupId")
     private VGDGroup group;
     private boolean accepted;
     private boolean declined;
-    private boolean active;
-    private LocalDateTime expiresAt;
+    private LocalDateTime createdAt;
+    private long minutesTillExpires;
 
-    public VGDGroupInvite(VGDPlayer player, VGDGroup group, long minutesTillExpires) {
-        this.player = player;
+    public VGDGroupInvite(VGDPlayer inviter, VGDPlayer invitee, VGDGroup group, long minutesTillExpires) {
+        this.inviter = inviter;
+        this.invitee = invitee;
         this.group = group;
         this.accepted = false;
         this.declined = false;
-        this.active = false;
-        this.expiresAt = LocalDateTime.now().plusMinutes(minutesTillExpires);
+        this.createdAt = LocalDateTime.now();
+        this.minutesTillExpires = minutesTillExpires;
     }
 
-    public VGDGroupInvite(VGDPlayer player, VGDGroup group) {
-        this(player, group, 15);
+    public VGDGroupInvite(VGDPlayer inviter, VGDPlayer invitee, VGDGroup group) {
+        this(inviter, invitee, group, 15);
     }
 
     // JPA/Hibernate
@@ -39,12 +45,20 @@ public class VGDGroupInvite {
         return this.id;
     }
 
-    public void setPlayer(VGDPlayer player) {
-        this.player = player;
+    public void setInviter(VGDPlayer inviter) {
+        this.inviter = inviter;
     }
 
-    public VGDPlayer getPlayer() {
-        return this.player;
+    public VGDPlayer getInviter() {
+        return this.inviter;
+    }
+
+    public void setInvitee(VGDPlayer invitee) {
+        this.invitee = invitee;
+    }
+
+    public VGDPlayer getInvitee() {
+        return this.invitee;
     }
 
     public void setGroup(VGDGroup group) {
@@ -80,6 +94,6 @@ public class VGDGroupInvite {
     }
 
     public boolean isExpired() {
-        return LocalDateTime.now().isAfter(this.expiresAt);
+        return LocalDateTime.now().isAfter(this.createdAt.plusMinutes(this.minutesTillExpires));
     }
 }

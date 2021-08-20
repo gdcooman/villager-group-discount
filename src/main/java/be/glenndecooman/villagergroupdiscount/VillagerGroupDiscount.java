@@ -33,7 +33,7 @@ public final class VillagerGroupDiscount extends JavaPlugin {
 
 
         pm.registerEvents(new OnPlayerPreLogin(), this);
-        pm.registerEvents(new OnVillagerCured(), this);
+        pm.registerEvents(new OnVillagerCured(this), this);
         pm.registerEvents(new OnVillagerDeath(), this);
         pm.registerEvents(new OnVillagerInfected(), this);
     }

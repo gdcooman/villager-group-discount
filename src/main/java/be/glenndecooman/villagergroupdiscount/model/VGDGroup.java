@@ -1,15 +1,17 @@
 package be.glenndecooman.villagergroupdiscount.model;
 
+import com.destroystokyo.paper.entity.villager.Reputation;
+import com.destroystokyo.paper.entity.villager.ReputationType;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Villager;
+
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name = "VGDGroup")
 public class VGDGroup {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String name;
@@ -65,21 +67,44 @@ public class VGDGroup {
 
     public void addMember(VGDPlayer player) {
         this.members.add(player);
+
         player.setGroup(this);
+        player.getCuredVillagers().forEach((v) -> {
+            addCuredVillager(v);
+        });
     }
 
     public void removeMember(VGDPlayer player) {
         this.members.remove(player);
+
         player.setGroup(null);
+        player.getCuredVillagers().forEach((v) -> {
+            removeCuredVillager(v);
+        });
     }
 
     public void addCuredVillager(CuredVillager villager) {
         this.curedVillagers.add(villager);
         villager.setCurerGroup(this);
+        addMajorPositiveReputation(villager);
     }
 
     public void removeCuredVillager(CuredVillager villager) {
         this.curedVillagers.remove(villager);
         villager.setCurerGroup(null);
+    }
+
+    private void addMajorPositiveReputation(CuredVillager vgdVillager) {
+        // Add MAJOR_POSITIVE reputation for all group members to the new CuredVillager
+        Villager villager = (Villager) Bukkit.getEntity(vgdVillager.getId());
+        if (villager != null) {
+            int repValue = villager.getReputation(vgdVillager.getCurer().getId()).getReputation(ReputationType.MAJOR_POSITIVE);
+
+            for (VGDPlayer member : members) {
+                Reputation rep = villager.getReputation(member.getId());
+                rep.setReputation(ReputationType.MAJOR_POSITIVE, repValue);
+                villager.setReputation(member.getId(), rep);
+            }
+        }
     }
 }
