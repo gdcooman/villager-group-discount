@@ -76,9 +76,15 @@ public class CuredVillager {
         if (villager != null) {
             if (player != curer) {
                 Map<UUID, Reputation> reputations = villager.getReputations();
+
                 Reputation rep = reputations.get(player.getId());
+                if (rep == null) {
+                    rep = new Reputation();
+                }
                 rep.setReputation(ReputationType.MAJOR_POSITIVE, reputationValue);
+
                 reputations.put(player.getId(), rep);
+
                 // You need to clear them first, because it won't change non-zero reps to 0 (probably a bug).
                 villager.clearReputations();
                 villager.setReputations(reputations);
