@@ -66,45 +66,47 @@ public class VGDGroup {
     }
 
     public void addMember(VGDPlayer player) {
-        this.members.add(player);
-
         player.setGroup(this);
         player.getCuredVillagers().forEach((v) -> {
             addCuredVillager(v);
         });
+
+        curedVillagers.forEach((v) -> {
+            v.setReputation(player, ReputationType.MAJOR_POSITIVE);
+        });
+
+        this.members.add(player);
     }
 
     public void removeMember(VGDPlayer player) {
-        this.members.remove(player);
-
         player.setGroup(null);
+
         player.getCuredVillagers().forEach((v) -> {
             removeCuredVillager(v);
         });
+
+        curedVillagers.forEach((v) -> {
+            v.setReputation(player, ReputationType.MAJOR_POSITIVE, 0);
+        });
+
+        this.members.remove(player);
     }
 
     public void addCuredVillager(CuredVillager villager) {
         this.curedVillagers.add(villager);
         villager.setCurerGroup(this);
-        addMajorPositiveReputation(villager);
+
+        for(VGDPlayer member : members) {
+            villager.setReputation(member, ReputationType.MAJOR_POSITIVE);
+        }
     }
 
     public void removeCuredVillager(CuredVillager villager) {
         this.curedVillagers.remove(villager);
         villager.setCurerGroup(null);
-    }
 
-    private void addMajorPositiveReputation(CuredVillager vgdVillager) {
-        // Add MAJOR_POSITIVE reputation for all group members to the new CuredVillager
-        Villager villager = (Villager) Bukkit.getEntity(vgdVillager.getId());
-        if (villager != null) {
-            int repValue = villager.getReputation(vgdVillager.getCurer().getId()).getReputation(ReputationType.MAJOR_POSITIVE);
-
-            for (VGDPlayer member : members) {
-                Reputation rep = villager.getReputation(member.getId());
-                rep.setReputation(ReputationType.MAJOR_POSITIVE, repValue);
-                villager.setReputation(member.getId(), rep);
-            }
+        for(VGDPlayer member : members) {
+            villager.setReputation(member, ReputationType.MAJOR_POSITIVE, 0);
         }
     }
 }
