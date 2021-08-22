@@ -1,7 +1,11 @@
 name: VillagerGroupDiscount
 version: ${project.version}
 main: be.glenndecooman.villagergroupdiscount.VillagerGroupDiscount
-api-version: 1.16
-prefix: VillageGroupDiscount
-authors: [ gdcooman ]
+api-version: 1.17
+prefix: VillagerGroupDiscount
+author: gdcooman
 description: Makes villager discounts apply to multiple people
+commands:
+  vgd:
+    description: Utilize the plugin
+    usage: /<command> <params>
