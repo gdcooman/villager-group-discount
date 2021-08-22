@@ -1,4 +1,4 @@
-# Villager Group Discounts (VGD)
+# Villager Group Discount (VGD)
 
 This is a [Paper](https://papermc.io/) plugin designed to make the discounts that villagers offer available to a (user defined) group of players (instead of only to the player that cured the zombie villager).
 
