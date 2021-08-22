@@ -1,9 +1,10 @@
 package be.glenndecooman.villagergroupdiscount.task;
 
-import be.glenndecooman.villagergroupdiscount.model.CuredVillager;
+import be.glenndecooman.villagergroupdiscount.model.VGDCuredVillager;
 import be.glenndecooman.villagergroupdiscount.model.VGDGroup;
 import be.glenndecooman.villagergroupdiscount.model.VGDPlayer;
 import be.glenndecooman.villagergroupdiscount.persistence.*;
+import be.glenndecooman.villagergroupdiscount.util.JPAUtil;
 import com.destroystokyo.paper.entity.villager.ReputationType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Villager;
@@ -25,22 +26,22 @@ public class AddCuredVillagerTask extends BukkitRunnable {
     public void run() {
         EntityManager em = JPAUtil.getEntityManager();
         VGDPlayerDAO vgdPlayerDAO = new VGDPlayerDAOImpl(em);
-        CuredVillagerDAO curedVillagerDAO = new CuredVillagerDAOImpl(em);
+        VGDCuredVillagerDAO vgdCuredVillagerDAO = new VGDCuredVillagerDAOImpl(em);
 
         VGDPlayer player = vgdPlayerDAO.findById(playerId);
         VGDGroup group = player.getGroup();
         Villager villageE = (Villager) Bukkit.getEntity(villagerId);
         int reputationValue = villageE.getReputation(playerId).getReputation(ReputationType.MAJOR_POSITIVE);
-        CuredVillager villager = new CuredVillager(villagerId, reputationValue);
+        VGDCuredVillager villager = new VGDCuredVillager(villagerId, reputationValue);
 
         em.getTransaction().begin();
-        curedVillagerDAO.add(villager);
         player.addCuredVillager(villager);
 
         if (group != null) {
             group.addCuredVillager(villager);
         }
 
+        vgdCuredVillagerDAO.add(villager);
         em.getTransaction().commit();
         em.close();
     }

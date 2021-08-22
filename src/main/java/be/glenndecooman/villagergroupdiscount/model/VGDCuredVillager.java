@@ -12,31 +12,31 @@ import javax.persistence.ManyToOne;
 import java.util.Map;
 import java.util.UUID;
 
-@Entity(name = "CuredVillager")
-public class CuredVillager {
+@Entity(name = "VGDCuredVillager")
+public class VGDCuredVillager {
     @Id
     private UUID id;
     @ManyToOne
-    @JoinColumn(name = "playerUUID")
+    @JoinColumn(name = "curerId")
     private VGDPlayer curer;
     @ManyToOne
     @JoinColumn(name = "groupId")
     private VGDGroup curerGroup;
     private int reputationValue;
 
-    public CuredVillager(UUID id, VGDPlayer curer, VGDGroup curerGroup, int reputationValue) {
+    public VGDCuredVillager(UUID id, VGDPlayer curer, VGDGroup curerGroup, int reputationValue) {
         this.id = id;
         this.curer = curer;
         this.curerGroup = curerGroup;
         this.reputationValue = reputationValue;
     }
 
-    public CuredVillager(UUID id, int reputationValue) {
+    public VGDCuredVillager(UUID id, int reputationValue) {
         this(id, null, null, reputationValue);
     }
 
     // JPA/Hibernate
-    protected CuredVillager() {}
+    protected VGDCuredVillager() {}
 
     public UUID getId() {
         return this.id;

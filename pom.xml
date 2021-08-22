@@ -6,7 +6,7 @@
 
     <groupId>be.glenndecooman</groupId>
     <artifactId>VillagerGroupDiscount</artifactId>
-    <version>0.1</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>VillagerGroupDiscount</name>

@@ -1,8 +1,8 @@
 package be.glenndecooman.villagergroupdiscount.listener;
 
-import be.glenndecooman.villagergroupdiscount.persistence.CuredVillagerDAO;
-import be.glenndecooman.villagergroupdiscount.persistence.CuredVillagerDAOImpl;
-import be.glenndecooman.villagergroupdiscount.persistence.JPAUtil;
+import be.glenndecooman.villagergroupdiscount.persistence.VGDCuredVillagerDAO;
+import be.glenndecooman.villagergroupdiscount.persistence.VGDCuredVillagerDAOImpl;
+import be.glenndecooman.villagergroupdiscount.util.JPAUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTransformEvent;
@@ -17,10 +17,10 @@ public class OnVillagerInfected implements Listener {
             UUID oldVillagerId = event.getEntity().getUniqueId();
 
             EntityManager em = JPAUtil.getEntityManager();
-            CuredVillagerDAO curedVillagerDAO = new CuredVillagerDAOImpl(em);
+            VGDCuredVillagerDAO vgdCuredVillagerDAO = new VGDCuredVillagerDAOImpl(em);
 
             em.getTransaction().begin();
-            curedVillagerDAO.delete(oldVillagerId);
+            vgdCuredVillagerDAO.delete(oldVillagerId);
             em.getTransaction().commit();
             em.close();
         }

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InviteCommand implements SubCommand {
-    private Map<String, SubCommand> subCommands = new HashMap<>();
+    private final Map<String, SubCommand> subCommands = new HashMap<>();
 
     public InviteCommand() {
         subCommands.put("accept", new AcceptInviteCommand());
@@ -24,10 +24,15 @@ public class InviteCommand implements SubCommand {
             if (subCommand != null) {
                 subCommand.execute(sender, slicedArgs);
             } else {
-                showUsage(sender, "/vgd invite <accept/decline>");
+                showUsage(sender);
             }
         } else {
-            showUsage(sender, "/vgd invite <accept/decline>");
+            showUsage(sender);
         }
+    }
+
+    @Override
+    public void showUsage(Player player) {
+        showUsage(player, "/vgd invite <accept/decline>");
     }
 }

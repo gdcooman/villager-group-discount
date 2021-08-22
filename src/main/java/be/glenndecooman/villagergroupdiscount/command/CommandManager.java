@@ -2,7 +2,6 @@ package be.glenndecooman.villagergroupdiscount.command;
 
 import be.glenndecooman.villagergroupdiscount.command.subcommand.GroupCommand;
 import be.glenndecooman.villagergroupdiscount.command.subcommand.InviteCommand;
-import be.glenndecooman.villagergroupdiscount.persistence.JPAUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -1,4 +1,4 @@
-package be.glenndecooman.villagergroupdiscount.persistence;
+package be.glenndecooman.villagergroupdiscount.util;
 
 import org.bukkit.plugin.Plugin;
 

@@ -1,9 +1,8 @@
 package be.glenndecooman.villagergroupdiscount.model;
 
-import com.destroystokyo.paper.entity.villager.Reputation;
+import be.glenndecooman.villagergroupdiscount.util.MsgUtil;
 import com.destroystokyo.paper.entity.villager.ReputationType;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Villager;
 
 import javax.persistence.*;
 import java.util.*;
@@ -16,14 +15,14 @@ public class VGDGroup {
     @Column
     private String name;
     @OneToOne
-    @JoinColumn(name = "ownerUUID")
+    @JoinColumn(name = "owner")
     private VGDPlayer owner;
-    @OneToMany(mappedBy = "vgdGroup", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vgdGroup")
     private Set<VGDPlayer> members;
-    @OneToMany(mappedBy = "curerGroup", cascade = CascadeType.ALL)
-    private Set<CuredVillager> curedVillagers;
+    @OneToMany(mappedBy = "curerGroup")
+    private Set<VGDCuredVillager> curedVillagers;
 
-    public VGDGroup(String name, VGDPlayer owner, Set<VGDPlayer> members, Set<CuredVillager> curedVillagers) {
+    public VGDGroup(String name, VGDPlayer owner, Set<VGDPlayer> members, Set<VGDCuredVillager> curedVillagers) {
         this.name = name;
         this.owner = owner;
         this.members = members;
@@ -61,15 +60,13 @@ public class VGDGroup {
         return Collections.unmodifiableSet(members);
     }
 
-    public Set<CuredVillager> getCuredVillagers() {
+    public Set<VGDCuredVillager> getCuredVillagers() {
         return Collections.unmodifiableSet(curedVillagers);
     }
 
     public void addMember(VGDPlayer player) {
         player.setGroup(this);
-        player.getCuredVillagers().forEach((v) -> {
-            addCuredVillager(v);
-        });
+        player.getCuredVillagers().forEach(this::addCuredVillager);
 
         curedVillagers.forEach((v) -> {
             v.setReputation(player, ReputationType.MAJOR_POSITIVE);
@@ -81,9 +78,7 @@ public class VGDGroup {
     public void removeMember(VGDPlayer player) {
         player.setGroup(null);
 
-        player.getCuredVillagers().forEach((v) -> {
-            removeCuredVillager(v);
-        });
+        player.getCuredVillagers().forEach(this::removeCuredVillager);
 
         curedVillagers.forEach((v) -> {
             v.setReputation(player, ReputationType.MAJOR_POSITIVE, 0);
@@ -92,21 +87,30 @@ public class VGDGroup {
         this.members.remove(player);
     }
 
-    public void addCuredVillager(CuredVillager villager) {
+    public void addCuredVillager(VGDCuredVillager villager) {
         this.curedVillagers.add(villager);
         villager.setCurerGroup(this);
 
-        for(VGDPlayer member : members) {
-            villager.setReputation(member, ReputationType.MAJOR_POSITIVE);
-        }
+        members.forEach(m -> {
+            villager.setReputation(m, ReputationType.MAJOR_POSITIVE);
+        });
     }
 
-    public void removeCuredVillager(CuredVillager villager) {
+    public void removeCuredVillager(VGDCuredVillager villager) {
         this.curedVillagers.remove(villager);
         villager.setCurerGroup(null);
 
-        for(VGDPlayer member : members) {
-            villager.setReputation(member, ReputationType.MAJOR_POSITIVE, 0);
+        members.forEach(m -> {
+            villager.setReputation(m, ReputationType.MAJOR_POSITIVE, 0);
+        });
+    }
+
+    public void disband() {
+        Object[] membersArr = members.toArray();
+        for(int i = 0; i < membersArr.length; i++) {
+            VGDPlayer member = (VGDPlayer) membersArr[i];
+            removeMember(member);
+            MsgUtil.info(Bukkit.getPlayer(member.getId()), String.format("%s has been disbanded.", name));
         }
     }
 }

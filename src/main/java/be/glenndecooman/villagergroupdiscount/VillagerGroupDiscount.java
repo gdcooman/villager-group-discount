@@ -1,13 +1,11 @@
 package be.glenndecooman.villagergroupdiscount;
 
 import be.glenndecooman.villagergroupdiscount.command.CommandManager;
-import be.glenndecooman.villagergroupdiscount.listener.OnPlayerPreLogin;
+import be.glenndecooman.villagergroupdiscount.listener.OnPlayerJoin;
 import be.glenndecooman.villagergroupdiscount.listener.OnVillagerCured;
 import be.glenndecooman.villagergroupdiscount.listener.OnVillagerDeath;
 import be.glenndecooman.villagergroupdiscount.listener.OnVillagerInfected;
-import be.glenndecooman.villagergroupdiscount.persistence.CuredVillagerDAOImpl;
-import be.glenndecooman.villagergroupdiscount.persistence.JPAUtil;
-import be.glenndecooman.villagergroupdiscount.persistence.VGDPlayerDAOImpl;
+import be.glenndecooman.villagergroupdiscount.util.JPAUtil;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,7 +30,7 @@ public final class VillagerGroupDiscount extends JavaPlugin {
 
 
 
-        pm.registerEvents(new OnPlayerPreLogin(), this);
+        pm.registerEvents(new OnPlayerJoin(), this);
         pm.registerEvents(new OnVillagerCured(this), this);
         pm.registerEvents(new OnVillagerDeath(), this);
         pm.registerEvents(new OnVillagerInfected(), this);

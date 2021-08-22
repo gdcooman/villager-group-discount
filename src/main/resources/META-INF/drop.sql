@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS VGDPlayer, VGDGroup, VGDCuredVillager, VGDGroupInvite CASCADE;

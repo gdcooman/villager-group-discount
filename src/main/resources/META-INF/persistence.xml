@@ -9,10 +9,17 @@
         <properties>
             <!-- Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-            
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+
+            <!-- GENERATE DB -->
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.create-source" value="script"/>
+            <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/create.sql"/>
+            <property name="javax.persistence.schema-generation.drop-source" value="script"/>
+            <property name="javax.persistence.schema-generation.drop-script-source" value="META-INF/drop.sql"/>
+
+
             <!-- Hikari CP -->
             <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
             <property name="hibernate.hikari.minimumIdle" value="20" />

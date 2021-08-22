@@ -1,10 +1,7 @@
 package be.glenndecooman.villagergroupdiscount.command.subcommand;
 
 import be.glenndecooman.villagergroupdiscount.command.SubCommand;
-import be.glenndecooman.villagergroupdiscount.command.subcommand.group.CreateGroupCommand;
-import be.glenndecooman.villagergroupdiscount.command.subcommand.group.DeleteGroupCommand;
-import be.glenndecooman.villagergroupdiscount.command.subcommand.group.InviteGroupCommand;
-import be.glenndecooman.villagergroupdiscount.command.subcommand.group.LeaveGroupCommand;
+import be.glenndecooman.villagergroupdiscount.command.subcommand.group.*;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -12,13 +9,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GroupCommand implements SubCommand {
-    private Map<String, SubCommand> subCommands = new HashMap<>();
+    private final Map<String, SubCommand> subCommands = new HashMap<>();
 
     public GroupCommand() {
         subCommands.put("create", new CreateGroupCommand());
         subCommands.put("delete", new DeleteGroupCommand());
         subCommands.put("invite", new InviteGroupCommand());
+        subCommands.put("kick", new KickGroupCommand());
         subCommands.put("leave", new LeaveGroupCommand());
+        subCommands.put("info", new InfoGroupCommand());
+        subCommands.put("transfer", new TransferGroupCommand());
     }
 
     @Override
@@ -29,10 +29,15 @@ public class GroupCommand implements SubCommand {
             if (subCommand != null) {
                 subCommand.execute(sender, slicedArgs);
             } else {
-                showUsage(sender, "/vgd group <subcommand> <argument>");
+                showUsage(sender);
             }
         } else {
-            showUsage(sender, "/vgd group <subcommand> <argument>");
+            showUsage(sender);
         }
+    }
+
+    @Override
+    public void showUsage(Player player) {
+        showUsage(player, "/vgd group <subcommand> <argument>");
     }
 }
