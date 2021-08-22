@@ -9,7 +9,7 @@ This is a [Paper](https://papermc.io/) plugin designed to make the discounts tha
 
 ## Install
 
-To install the plugin, all you need to do is place the `VillagerGroupDiscount-X.X.jar` into your `plugins` folder. VGD uses an H2 database. You cannot change what database you use currently.
+To install the plugin, all you need to do is place the `VillagerGroupDiscount-X-X.jar` into your `plugins` folder. VGD uses an H2 database. You cannot change what database you use currently.
 
 ## Usage
 
